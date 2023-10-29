@@ -31,10 +31,7 @@ Paso 3: Ejecutar un contenedor
 Una vez que la imagen se haya construido con éxito, puedes ejecutar un contenedor basado en esa imagen con la configuración deseada. Puedes usar el comando `docker run` para hacerlo:
 
 ```bash
-docker run -d --name mysql-container \
-  -p 3306:3306 \
-  -v db:/var/lib/mysql \
-  mysql-image
+docker run -d --name mysql-container -p 3306:3306 -v db:/var/lib/mysql mysql-image
 ```
 
 Esto creará un nuevo contenedor llamado "mysql-container " basado en la imagen que acabas de construir y utilizará la configuración de variables de entorno y volúmenes que especificaste en tu Dockerfile.
