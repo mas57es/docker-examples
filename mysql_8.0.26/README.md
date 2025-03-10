@@ -37,3 +37,12 @@ docker run -d --name mysql-container -p 3306:3306 -v db:/var/lib/mysql mysql-ima
 Esto creará un nuevo contenedor llamado "mysql-container " basado en la imagen que acabas de construir y utilizará la configuración de variables de entorno y volúmenes que especificaste en tu Dockerfile.
 
 Ahora deberías tener un contenedor en funcionamiento.
+
+# Elminar contenedor e imagen
+```bash
+docker rm -f mysql-container; docker rmi mysql-image8026
+```
+# Elminar contenedor e imagen y reCrear y arrancar
+```bash
+docker rm -f mysql-container; docker rmi mysql-image8026; docker build -t mysql-image8026 . ; docker run -d --name mysql-container -p 3306:3306 -v db:/var/lib/mysql mysql-image8026
+```
