@@ -1,30 +1,48 @@
-# mariadb_adminer
 
-This project uses Docker Compose to set up a MariaDB database and Adminer.
+Creamos un Dockerfile personalizado y luego construir una imagen a partir de ese Dockerfile. Luego, puedes ejecutar un contenedor basado en esa imagen. Aquí hay un ejemplo de cómo hacerlo:
 
-## Services
+Paso 1: Crear un Dockerfile
+Crea un archivo llamado "Dockerfile" en el directorio de tu proyecto con el siguiente contenido:
 
-1. **db**: This service uses the MariaDB image. It restarts always and the root password is set to 'example'. The container name is set using the `COMPOSE_PROJECT_NAME` environment variable.
+```Dockerfile
+# Usa la imagen base de MariaDB
+FROM MariaDB:latest
 
-2. **adminer**: This service uses the Adminer image. It restarts always and maps the host port 8081 to the container port 8080. The container name is set using the `COMPOSE_PROJECT_NAME` environment variable.
+# Establece las variables de entorno necesarias
+ENV MARIADB_ROOT_PASSWORD:'root'
+ENV MARIADB_DATABASE:'example'
+ENV MARIADB_USER:'example'
+ENV MARIADB_PASSWORD:'example'
 
-## How to Run
-
-1. Set your `COMPOSE_PROJECT_NAME` environment variable.
-2. Run `docker-compose up` in the terminal.
-
-Please ensure Docker and Docker Compose are installed and running on your machine before attempting to start the services.
-
-
-In the context of Docker Compose, the COMPOSE_PROJECT_NAME environment variable is used to set the project name, which is prepended to the name of every container started by Docker Compose. This is useful when you're running multiple instances of the same project on the same Docker host to avoid container name conflicts.
-
-To set an environment variable, you can use the export command in Linux or macOS, or the setx command in Windows. For example, to set the COMPOSE_PROJECT_NAME to mariadb_adminer, you would use the following command in a Linux or macOS terminal:
-```bash
-export COMPOSE_PROJECT_NAME=mariadb_adminer
+# Expone el puerto 3306
+EXPOSE 3306
 ```
 
-And in Windows:
+Paso 2: Construir la imagen
+Abre una terminal en el directorio donde se encuentra tu Dockerfile y ejecuta el siguiente comando para construir la imagen:
+
 ```bash
-setx COMPOSE_PROJECT_NAME mariadb_adminer
+docker build -t mariadb-image-latest .
 ```
-Remember to replace mariadb_adminer with the actual name you want to use for your project.
+
+Reemplaza "mariadb-image-latest" con el nombre que desees para tu imagen.
+
+Paso 3: Ejecutar un contenedor
+Una vez que la imagen se haya construido con éxito, puedes ejecutar un contenedor basado en esa imagen con la configuración deseada. Puedes usar el comando `docker run` para hacerlo:
+
+```bash
+docker run -d --name mariadb-container -p 3306:3306 -v db:/var/lib/mariadb mariadb-image-latest
+```
+
+Esto creará un nuevo contenedor llamado "mariadb-container " basado en la imagen que acabas de construir y utilizará la configuración de variables de entorno y volúmenes que especificaste en tu Dockerfile.
+
+Ahora deberías tener un contenedor en funcionamiento.
+
+# Elminar contenedor e imagen
+```bash
+docker rm -f mariadb-container; docker rmi mariadb-image-latest
+```
+# Elminar contenedor e imagen y reCrear y arrancar
+```bash
+docker rm -f mariadb-container; docker rmi mariadb-image-latest; docker build -t mariadb-image-latest . ; docker run -d --name mariadb-container -p 3306:3306 -v db:/var/lib/mariadb mariadb-image-latest
+```
